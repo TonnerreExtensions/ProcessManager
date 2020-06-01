@@ -1,0 +1,4 @@
+title: Process Manager
+subtitle: List running applications and provide option to kill or force kill them
+keyword: quit
+match: strict
