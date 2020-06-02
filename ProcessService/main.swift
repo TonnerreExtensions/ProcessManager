@@ -17,7 +17,7 @@ struct RunningApp: Encodable {
 func listRunningApps(name: String) -> [RunningApp] {
   var running = NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }
   if !name.isEmpty {
-    running = running.filter { $0.localizedName?.contains(name) ?? true }
+    running = running.filter { $0.localizedName?.lowercased().contains(name) ?? true }
   }
   return running.map {
     RunningApp(title: "Quit \($0.localizedName ?? "UNKNOWN")",
@@ -63,6 +63,7 @@ func help() -> Never {
 }
 
 let arguments = CommandLine.arguments.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+print(arguments)
 if arguments.count > 3 || arguments.count <= 1 {
   help()
 }
