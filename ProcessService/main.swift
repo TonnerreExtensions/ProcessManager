@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import ArgumentParser
 
 struct RunningApp: Encodable {
   let title: String
@@ -51,27 +50,40 @@ func write<S: Encodable>(response: Response<S>, to output: String) throws {
 private let OUTPUT_ENV_KEY = "OUTPUT"
 private let IDENTIFIER_ENV_KEY = "IDENTIFIER"
 
-struct ProcessService: ParsableCommand {
-  @Option(name: .shortAndLong, help: "The name filter for running applications")
-  var query: String?
-  @Option(name: [.customShort("x"), .customLong("execute")], help: "The pid of targeted process")
-  var exitPid: Int32?
-  @Option(name: [.customShort("X"), .customLong("alter_execute")], help: "The pid of targeted process")
-  var killPid: Int32?
-  
-  func run() throws {
-    if let request = query {
-      let output = ProcessInfo.processInfo.environment[OUTPUT_ENV_KEY]!
-      let identifier = ProcessInfo.processInfo.environment[IDENTIFIER_ENV_KEY]!
-      let services = listRunningApps(name: request)
-      let response = Response(provider: identifier, services: services)
-      try write(response: response, to: output)
-    } else if let pid = exitPid {
-      quit(pid: pid, force: false)
-    } else if let pid = killPid {
-      quit(pid: pid, force: true)
-    }
-  }
+func help() -> Never {
+  print("""
+  Process Manager
+
+  Parameters:
+  -q, --query <query>       query for running applications
+  -x, --execute <id>        quit application with given pid
+  -X, --alter-execute <id>  force kill application with given pid
+  """)
+  exit(0)
 }
 
-ProcessService.main()
+let arguments = CommandLine.arguments
+if arguments.count > 3 || arguments.count <= 1 {
+  help()
+}
+
+if arguments[1] == "-q" || arguments[1] == "--query" {
+  let output = ProcessInfo.processInfo.environment[OUTPUT_ENV_KEY]!
+  let identifier = ProcessInfo.processInfo.environment[IDENTIFIER_ENV_KEY]!
+  let runningApps: [RunningApp]
+  if arguments.count == 2 {
+    runningApps = listRunningApps(name: "")
+  } else {
+    runningApps = listRunningApps(name: arguments[2].trimmingCharacters(in: .whitespacesAndNewlines))
+  }
+  let response = Response(provider: identifier, services: runningApps)
+  try! write(response: response, to: output)
+} else if arguments[1] == "-x" || arguments[1] == "--execute" {
+  guard let pid = Int32(arguments[2]) else { exit(1) }
+  quit(pid: pid, force: false)
+} else if arguments[1] == "-X" || arguments[1] == "--alter-execute" {
+  guard let pid = Int32(arguments[2]) else { exit(1) }
+  quit(pid: pid, force: true)
+} else {
+  help()
+}

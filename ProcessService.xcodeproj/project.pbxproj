@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		145D22DD248587A40087D91D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D22DC248587A40087D91D /* main.swift */; };
-		145D22E524858EED0087D91D /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 145D22E424858EED0087D91D /* ArgumentParser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +33,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				145D22E524858EED0087D91D /* ArgumentParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +81,6 @@
 			);
 			name = ProcessService;
 			packageProductDependencies = (
-				145D22E424858EED0087D91D /* ArgumentParser */,
 			);
 			productName = ProcessService;
 			productReference = 145D22D9248587A40087D91D /* ProcessService */;
@@ -114,7 +111,6 @@
 			);
 			mainGroup = 145D22D0248587A40087D91D;
 			packageReferences = (
-				145D22E324858EED0087D91D /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 			);
 			productRefGroup = 145D22DA248587A40087D91D /* Products */;
 			projectDirPath = "";
@@ -294,25 +290,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		145D22E324858EED0087D91D /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-argument-parser";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.6;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		145D22E424858EED0087D91D /* ArgumentParser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 145D22E324858EED0087D91D /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
-			productName = ArgumentParser;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 145D22D1248587A40087D91D /* Project object */;
 }
