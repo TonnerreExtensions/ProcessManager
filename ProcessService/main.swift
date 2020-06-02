@@ -11,7 +11,7 @@ import Cocoa
 struct RunningApp: Encodable {
   let title: String
   let subtitle: String
-  let id: pid_t
+  let id: String
 }
 
 func listRunningApps(name: String) -> [RunningApp] {
@@ -22,7 +22,7 @@ func listRunningApps(name: String) -> [RunningApp] {
   return running.map {
     RunningApp(title: "Quit \($0.localizedName ?? "UNKNOWN")",
                subtitle: $0.bundleURL?.path ?? "UNKNOWN",
-               id: $0.processIdentifier)
+               id: String($0.processIdentifier))
   }
 }
 
@@ -62,7 +62,7 @@ func help() -> Never {
   exit(0)
 }
 
-let arguments = CommandLine.arguments
+let arguments = CommandLine.arguments.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
 if arguments.count > 3 || arguments.count <= 1 {
   help()
 }
